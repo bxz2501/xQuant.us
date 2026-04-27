@@ -1,0 +1,178 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { Card } from "@/components/ui/card";
+import type { TradeRow } from "@/lib/perf";
+
+interface Props {
+  trades: TradeRow[];
+  showExit?: boolean;
+}
+
+type SortKey = "id" | "enterTime" | "exitTime" | "symbol1" | "position";
+
+export function TradesTable({ trades, showExit = true }: Props) {
+  const [sortKey, setSortKey] = useState<SortKey>("enterTime");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  const [filter, setFilter] = useState("");
+
+  const sorted = useMemo(() => {
+    const f = filter.trim().toUpperCase();
+    let arr = trades;
+    if (f) {
+      arr = arr.filter((t) => t.symbol1.toUpperCase().includes(f) || t.symbol2.toUpperCase().includes(f));
+    }
+    const dir = sortDir === "asc" ? 1 : -1;
+    return [...arr].sort((a, b) => {
+      const av = a[sortKey];
+      const bv = b[sortKey];
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      if (av < bv) return -1 * dir;
+      if (av > bv) return 1 * dir;
+      return 0;
+    });
+  }, [trades, sortKey, sortDir, filter]);
+
+  function toggleSort(k: SortKey) {
+    if (sortKey === k) setSortDir(sortDir === "asc" ? "desc" : "asc");
+    else {
+      setSortKey(k);
+      setSortDir("desc");
+    }
+  }
+
+  if (trades.length === 0) {
+    return (
+      <Card className="p-6">
+        <p className="text-sm text-text-muted text-center">No trades yet.</p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-4">
+      <div className="flex items-center justify-between mb-3 gap-3">
+        <h3 className="text-sm font-semibold text-text-secondary">
+          {showExit ? "Trade History" : "Open Positions"} ({sorted.length})
+        </h3>
+        <input
+          type="search"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Filter by symbol…"
+          className="rounded-lg border border-border-glass bg-bg-secondary px-2 py-1 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+        />
+      </div>
+      <div className="overflow-x-auto max-h-[640px] overflow-y-auto">
+        <table className="w-full text-sm">
+          <thead className="sticky top-0 bg-bg-secondary">
+            <tr className="border-b border-border-glass text-text-muted text-xs">
+              <Th onClick={() => toggleSort("id")} active={sortKey === "id"} dir={sortDir}>#</Th>
+              <Th onClick={() => toggleSort("symbol1")} active={sortKey === "symbol1"} dir={sortDir}>Pair</Th>
+              <Th onClick={() => toggleSort("position")} active={sortKey === "position"} dir={sortDir} align="right">Pos</Th>
+              <th className="text-right py-2 px-2">Share1 / Share2</th>
+              <th className="text-right py-2 px-2">Enter1 / Enter2</th>
+              {showExit && <th className="text-right py-2 px-2">Exit1 / Exit2</th>}
+              <Th onClick={() => toggleSort("enterTime")} active={sortKey === "enterTime"} dir={sortDir}>Enter</Th>
+              {showExit && <Th onClick={() => toggleSort("exitTime")} active={sortKey === "exitTime"} dir={sortDir}>Exit</Th>}
+              <th className="text-right py-2 px-2">Days</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map((t) => {
+              const days = daysBetween(t.enterTime, showExit ? t.exitTime : new Date().toISOString());
+              return (
+                <tr key={t.id} className="border-b border-border-glass/50 hover:bg-white/[0.02]">
+                  <td className="py-1.5 px-2 text-text-muted text-xs">{t.id}</td>
+                  <td className="py-1.5 px-2">
+                    <span className="text-text-primary">{t.symbol1}</span>
+                    <span className="text-text-muted"> / </span>
+                    <span className="text-text-secondary">{t.symbol2}</span>
+                  </td>
+                  <td className="py-1.5 px-2 text-right text-text-primary">{t.position}</td>
+                  <td className="py-1.5 px-2 text-right text-text-secondary">
+                    {fmtNum(t.share1)} / {fmtNum(t.share2)}
+                  </td>
+                  <td className="py-1.5 px-2 text-right text-text-secondary">
+                    {fmtPrice(t.enterPrice1)} / {fmtPrice(t.enterPrice2)}
+                  </td>
+                  {showExit && (
+                    <td className="py-1.5 px-2 text-right text-text-secondary">
+                      {fmtPrice(t.exitPrice1)} / {fmtPrice(t.exitPrice2)}
+                    </td>
+                  )}
+                  <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(t.enterTime)}</td>
+                  {showExit && <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(t.exitTime)}</td>}
+                  <td className="py-1.5 px-2 text-right text-text-secondary">{days ?? "—"}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
+function Th({
+  children,
+  onClick,
+  active,
+  dir,
+  align,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  active: boolean;
+  dir: "asc" | "desc";
+  align?: "right";
+}) {
+  return (
+    <th
+      onClick={onClick}
+      className={`py-2 px-2 cursor-pointer select-none ${align === "right" ? "text-right" : "text-left"} ${
+        active ? "text-text-primary" : "text-text-muted"
+      } hover:text-text-primary`}
+    >
+      {children}
+      {active && <span className="ml-1">{dir === "asc" ? "▲" : "▼"}</span>}
+    </th>
+  );
+}
+
+function fmtPrice(v: number | null): string {
+  if (v == null || !Number.isFinite(v)) return "—";
+  return v.toFixed(2);
+}
+
+function fmtNum(v: number): string {
+  if (!Number.isFinite(v)) return "—";
+  return v % 1 === 0 ? v.toFixed(0) : v.toFixed(2);
+}
+
+function fmtTime(s: string | null): string {
+  if (!s) return "—";
+  try {
+    return new Date(s).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return s;
+  }
+}
+
+function daysBetween(a: string | null, b: string | null): number | null {
+  if (!a || !b) return null;
+  try {
+    const ms = new Date(b).getTime() - new Date(a).getTime();
+    return Math.max(0, Math.round(ms / 86400000));
+  } catch {
+    return null;
+  }
+}
