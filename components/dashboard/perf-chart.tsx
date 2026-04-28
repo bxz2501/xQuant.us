@@ -15,12 +15,15 @@ export function PerfChart({ data }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
 
   useEffect(() => {
     if (!containerRef.current || data.length === 0) return;
 
     const isDark = theme === "dark";
+    const isZh = locale === "zh";
+    const successHex = isZh ? (isDark ? "#ef4444" : "#dc2626") : (isDark ? "#22c55e" : "#16a34a");
+    const dangerHex = isZh ? (isDark ? "#22c55e" : "#16a34a") : (isDark ? "#ef4444" : "#dc2626");
     const textColor = isDark ? "#94a3b8" : "#475569";
     const gridColor = isDark ? "rgba(148, 163, 184, 0.05)" : "rgba(148, 163, 184, 0.15)";
     const borderColor = isDark ? "rgba(148, 163, 184, 0.1)" : "rgba(148, 163, 184, 0.25)";
@@ -45,7 +48,7 @@ export function PerfChart({ data }: Props) {
     });
 
     const accountSeries = chart.addSeries(LineSeries, {
-      color: isDark ? "#22c55e" : "#16a34a",
+      color: successHex,
       lineWidth: 2,
       lastValueVisible: false,
       priceLineVisible: false,
@@ -87,7 +90,7 @@ export function PerfChart({ data }: Props) {
         return;
       }
       tooltip.style.display = "block";
-      tooltip.innerHTML = renderTooltip(row, isDark, {
+      tooltip.innerHTML = renderTooltip(row, { successHex, dangerHex, mktColor: isDark ? "#94a3b8" : "#64748b" }, {
         account: t("perf.account"),
         market: t("perf.market"),
         outperform: t("perf.outperform"),
@@ -117,7 +120,7 @@ export function PerfChart({ data }: Props) {
       chart.unsubscribeCrosshairMove(crosshairHandler);
       chart.remove();
     };
-  }, [data, theme, t]);
+  }, [data, theme, locale, t]);
 
   return (
     <Card className="p-4">
@@ -141,18 +144,16 @@ export function PerfChart({ data }: Props) {
 
 function renderTooltip(
   row: OutPerformRow,
-  isDark: boolean,
+  colors: { successHex: string; dangerHex: string; mktColor: string },
   labels: { account: string; market: string; outperform: string },
 ): string {
-  const accColor = isDark ? "#22c55e" : "#16a34a";
-  const mktColor = isDark ? "#94a3b8" : "#64748b";
-  const outColor = row.outPerform >= 0 ? (isDark ? "#22c55e" : "#16a34a") : (isDark ? "#ef4444" : "#dc2626");
+  const outColor = row.outPerform >= 0 ? colors.successHex : colors.dangerHex;
   const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
   return `
     <div class="text-text-muted mb-1">${row.date}</div>
     <div class="grid grid-cols-[auto_auto] gap-x-3 gap-y-0.5">
-      <span style="color:${accColor}">${esc(labels.account)}</span><span class="text-right font-mono">${pct(row.accountReturn)}</span>
-      <span style="color:${mktColor}">${esc(labels.market)}</span><span class="text-right font-mono">${pct(row.marketReturn)}</span>
+      <span style="color:${colors.successHex}">${esc(labels.account)}</span><span class="text-right font-mono">${pct(row.accountReturn)}</span>
+      <span style="color:${colors.mktColor}">${esc(labels.market)}</span><span class="text-right font-mono">${pct(row.marketReturn)}</span>
       <span class="text-text-secondary">${esc(labels.outperform)}</span><span class="text-right font-mono" style="color:${outColor}">${pct(row.outPerform)}</span>
     </div>
   `;

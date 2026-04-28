@@ -52,12 +52,15 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("locale") as Locale | null;
-    if (saved === "en" || saved === "zh") setLocale(saved);
+    const initial: Locale = saved === "en" || saved === "zh" ? saved : "en";
+    setLocale(initial);
+    document.documentElement.setAttribute("data-locale", initial);
   }, []);
 
   function toggleLocale() {
     const next: Locale = locale === "en" ? "zh" : "en";
     setLocale(next);
+    document.documentElement.setAttribute("data-locale", next);
     localStorage.setItem("locale", next);
   }
 

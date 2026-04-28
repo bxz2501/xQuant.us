@@ -41,6 +41,16 @@
   --scrollbar-thumb-hover: rgba(148, 163, 184, 0.5);
 }
 
+/* Chinese convention: gains red, losses green (opposite of Western) */
+[data-locale="zh"] {
+  --success: #ef4444;
+  --danger: #22c55e;
+}
+[data-locale="zh"][data-theme="light"] {
+  --success: #dc2626;
+  --danger: #16a34a;
+}
+
 @theme inline {
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
