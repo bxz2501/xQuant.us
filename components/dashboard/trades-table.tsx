@@ -2,14 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
-import type { TradeRow } from "@/lib/perf";
+import type { TradeRowWithPnl } from "@/lib/perf";
 
 interface Props {
-  trades: TradeRow[];
+  trades: TradeRowWithPnl[];
   showExit?: boolean;
 }
 
-type SortKey = "id" | "enterTime" | "exitTime" | "symbol1" | "position";
+type SortKey = "id" | "enterTime" | "exitTime" | "symbol1" | "pnl";
 
 export function TradesTable({ trades, showExit = true }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>("enterTime");
@@ -20,7 +20,7 @@ export function TradesTable({ trades, showExit = true }: Props) {
     const f = filter.trim().toUpperCase();
     let arr = trades;
     if (f) {
-      arr = arr.filter((t) => t.symbol1.toUpperCase().includes(f) || t.symbol2.toUpperCase().includes(f));
+      arr = arr.filter((t) => t.symbol1.toUpperCase().includes(f));
     }
     const dir = sortDir === "asc" ? 1 : -1;
     return [...arr].sort((a, b) => {
@@ -70,13 +70,19 @@ export function TradesTable({ trades, showExit = true }: Props) {
           <thead className="sticky top-0 bg-bg-secondary">
             <tr className="border-b border-border-glass text-text-muted text-xs">
               <Th onClick={() => toggleSort("id")} active={sortKey === "id"} dir={sortDir}>#</Th>
-              <Th onClick={() => toggleSort("symbol1")} active={sortKey === "symbol1"} dir={sortDir}>Pair</Th>
-              <Th onClick={() => toggleSort("position")} active={sortKey === "position"} dir={sortDir} align="right">Pos</Th>
-              <th className="text-right py-2 px-2">Share1 / Share2</th>
-              <th className="text-right py-2 px-2">Enter1 / Enter2</th>
-              {showExit && <th className="text-right py-2 px-2">Exit1 / Exit2</th>}
-              <Th onClick={() => toggleSort("enterTime")} active={sortKey === "enterTime"} dir={sortDir}>Enter</Th>
-              {showExit && <Th onClick={() => toggleSort("exitTime")} active={sortKey === "exitTime"} dir={sortDir}>Exit</Th>}
+              <Th onClick={() => toggleSort("symbol1")} active={sortKey === "symbol1"} dir={sortDir}>Symbol</Th>
+              <th className="text-right py-2 px-2">Shares</th>
+              <th className="text-right py-2 px-2">Enter</th>
+              {showExit ? (
+                <th className="text-right py-2 px-2">Exit</th>
+              ) : (
+                <th className="text-right py-2 px-2">Current</th>
+              )}
+              <Th onClick={() => toggleSort("pnl")} active={sortKey === "pnl"} dir={sortDir} align="right">
+                P/L
+              </Th>
+              <Th onClick={() => toggleSort("enterTime")} active={sortKey === "enterTime"} dir={sortDir}>Enter Time</Th>
+              {showExit && <Th onClick={() => toggleSort("exitTime")} active={sortKey === "exitTime"} dir={sortDir}>Exit Time</Th>}
               <th className="text-right py-2 px-2">Days</th>
             </tr>
           </thead>
@@ -86,23 +92,15 @@ export function TradesTable({ trades, showExit = true }: Props) {
               return (
                 <tr key={t.id} className="border-b border-border-glass/50 hover:bg-white/[0.02]">
                   <td className="py-1.5 px-2 text-text-muted text-xs">{t.id}</td>
-                  <td className="py-1.5 px-2">
-                    <span className="text-text-primary">{t.symbol1}</span>
-                    <span className="text-text-muted"> / </span>
-                    <span className="text-text-secondary">{t.symbol2}</span>
-                  </td>
-                  <td className="py-1.5 px-2 text-right text-text-primary">{t.position}</td>
-                  <td className="py-1.5 px-2 text-right text-text-secondary">
-                    {fmtNum(t.share1)} / {fmtNum(t.share2)}
-                  </td>
-                  <td className="py-1.5 px-2 text-right text-text-secondary">
-                    {fmtPrice(t.enterPrice1)} / {fmtPrice(t.enterPrice2)}
-                  </td>
-                  {showExit && (
-                    <td className="py-1.5 px-2 text-right text-text-secondary">
-                      {fmtPrice(t.exitPrice1)} / {fmtPrice(t.exitPrice2)}
-                    </td>
+                  <td className="py-1.5 px-2 text-text-primary">{t.symbol1}</td>
+                  <td className="py-1.5 px-2 text-right text-text-secondary">{fmtNum(t.share1)}</td>
+                  <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.enterPrice1)}</td>
+                  {showExit ? (
+                    <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.exitPrice1)}</td>
+                  ) : (
+                    <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.currentPrice)}</td>
                   )}
+                  <td className={`py-1.5 px-2 text-right font-mono ${pnlColor(t.pnl)}`}>{fmtPnl(t.pnl)}</td>
                   <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(t.enterTime)}</td>
                   {showExit && <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(t.exitTime)}</td>}
                   <td className="py-1.5 px-2 text-right text-text-secondary">{days ?? "—"}</td>
@@ -140,6 +138,18 @@ function Th({
       {active && <span className="ml-1">{dir === "asc" ? "▲" : "▼"}</span>}
     </th>
   );
+}
+
+function fmtPnl(v: number | null): string {
+  if (v == null || !Number.isFinite(v)) return "—";
+  const sign = v > 0 ? "+" : v < 0 ? "−" : "";
+  const abs = Math.abs(v);
+  return `${sign}$${abs.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function pnlColor(v: number | null): string {
+  if (v == null || !Number.isFinite(v) || v === 0) return "text-text-secondary";
+  return v > 0 ? "text-success" : "text-danger";
 }
 
 function fmtPrice(v: number | null): string {

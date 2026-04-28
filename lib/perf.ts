@@ -38,6 +38,13 @@ export type TradeRow = {
 
 export type Meta = { generatedAt: string | null; account: string | null };
 
+export type LatestQuote = { symbol: string; exchange: string; close: number | null; time: string | null };
+
+export type TradeRowWithPnl = TradeRow & {
+  currentPrice: number | null;
+  pnl: number | null;
+};
+
 /**
  * Minimal CSV parser. Handles RFC4180 quoting: quoted fields, escaped quotes ("").
  * Newlines inside quoted fields are supported.
@@ -183,6 +190,49 @@ export async function loadTrades(): Promise<TradeRow[]> {
     createdOn: r[i.createdOn],
     modifiedOn: r[i.modifiedOn],
   }));
+}
+
+export async function loadLatestQuotes(): Promise<Map<string, LatestQuote>> {
+  try {
+    const { headers, rows } = await readCsv("latest_quotes.csv");
+    const idx = (k: string) => headers.indexOf(k);
+    const i = {
+      symbol: idx("Symbol"),
+      exchange: idx("Exchange"),
+      close: idx("LatestClose"),
+      time: idx("QuoteTime"),
+    };
+    const map = new Map<string, LatestQuote>();
+    for (const r of rows) {
+      const symbol = r[i.symbol];
+      if (!symbol) continue;
+      map.set(symbol, {
+        symbol,
+        exchange: r[i.exchange],
+        close: nullableNum(r[i.close]),
+        time: nullableStr(r[i.time]),
+      });
+    }
+    return map;
+  } catch {
+    return new Map();
+  }
+}
+
+export function attachPnl(trade: TradeRow, quotes: Map<string, LatestQuote>): TradeRowWithPnl {
+  if (trade.active) {
+    const current = quotes.get(trade.symbol1)?.close ?? null;
+    const pnl =
+      current != null && trade.enterPrice1 != null
+        ? (current - trade.enterPrice1) * trade.share1
+        : null;
+    return { ...trade, currentPrice: current, pnl };
+  }
+  const pnl =
+    trade.exitPrice1 != null && trade.enterPrice1 != null
+      ? (trade.exitPrice1 - trade.enterPrice1) * trade.share1
+      : null;
+  return { ...trade, currentPrice: null, pnl };
 }
 
 export async function loadMeta(): Promise<Meta> {
