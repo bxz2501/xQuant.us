@@ -41,7 +41,7 @@ export function DashboardShell({
         <div className="p-4 border-b border-border-glass">
           <div className="flex items-center justify-between">
             <Image
-              src="/logo.png"
+              src={theme === "dark" ? "/logo.png" : "/logo-light.png"}
               alt="xQuant"
               width={2172}
               height={720}
@@ -135,7 +135,7 @@ export function DashboardShell({
             </svg>
           </button>
           <Image
-            src="/logo.png"
+            src={theme === "dark" ? "/logo.png" : "/logo-light.png"}
             alt="xQuant"
             width={2172}
             height={720}
