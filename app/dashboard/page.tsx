@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { PerfChart } from "@/components/dashboard/perf-chart";
 import { PerfSummary } from "@/components/dashboard/perf-summary";
 import { Spinner } from "@/components/ui/spinner";
+import { useLocale } from "@/components/locale-provider";
 import type { OutPerformRow } from "@/lib/perf";
 
 export default function PerformancePage() {
+  const { t } = useLocale();
   const [rows, setRows] = useState<OutPerformRow[] | null>(null);
   const [error, setError] = useState("");
 
@@ -17,8 +19,8 @@ export default function PerformancePage() {
         if (d.error) setError(d.error);
         else setRows(d.rows as OutPerformRow[]);
       })
-      .catch((e) => setError(e instanceof Error ? e.message : "load failed"));
-  }, []);
+      .catch((e) => setError(e instanceof Error ? e.message : t("errors.loadFailed")));
+  }, [t]);
 
   if (error) {
     return (
@@ -32,9 +34,9 @@ export default function PerformancePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-text-primary">Performance vs S&P 500</h2>
+        <h2 className="text-xl font-bold text-text-primary">{t("perf.title")}</h2>
         <p className="text-sm text-text-secondary mt-1">
-          Cumulative return since {rows[0]?.date} ({rows.length} trading days)
+          {t("perf.subtitle", { date: rows[0]?.date ?? "—", days: rows.length })}
         </p>
       </div>
       <PerfSummary rows={rows} />

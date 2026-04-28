@@ -6,12 +6,13 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { useTheme } from "@/components/theme-provider";
+import { useLocale } from "@/components/locale-provider";
 import type { Meta } from "@/lib/perf";
 
 const NAV = [
-  { href: "/dashboard", label: "Performance", protected: false },
-  { href: "/dashboard/positions", label: "Positions", protected: true },
-  { href: "/dashboard/trades", label: "Trades", protected: true },
+  { href: "/dashboard", labelKey: "nav.performance", protected: false },
+  { href: "/dashboard/positions", labelKey: "nav.positions", protected: true },
+  { href: "/dashboard/trades", labelKey: "nav.trades", protected: true },
 ];
 
 export function DashboardShell({
@@ -25,6 +26,7 @@ export function DashboardShell({
 }) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { locale, toggleLocale, t } = useLocale();
   const [open, setOpen] = useState(false);
 
   return (
@@ -48,21 +50,30 @@ export function DashboardShell({
               priority
               className="h-8 w-auto"
             />
-            <button
-              onClick={toggleTheme}
-              className="p-1.5 rounded-lg hover:bg-bg-card transition-colors cursor-pointer text-text-muted hover:text-text-primary"
-              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? (
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={toggleLocale}
+                className="px-2 py-1 rounded-lg hover:bg-bg-card transition-colors cursor-pointer text-text-muted hover:text-text-primary text-xs font-semibold"
+                title={locale === "en" ? t("shell.switchToChinese") : t("shell.switchToEnglish")}
+              >
+                {locale === "en" ? "中文" : "EN"}
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="p-1.5 rounded-lg hover:bg-bg-card transition-colors cursor-pointer text-text-muted hover:text-text-primary"
+                title={theme === "dark" ? t("shell.switchToLight") : t("shell.switchToDark")}
+              >
+                {theme === "dark" ? (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
           <div className="flex items-center justify-between mt-2">
             {userName ? (
@@ -72,17 +83,17 @@ export function DashboardShell({
                   onClick={() => signOut({ callbackUrl: "/dashboard" })}
                   className="text-xs text-text-muted hover:text-accent transition-colors cursor-pointer"
                 >
-                  Logout
+                  {t("auth.signOut")}
                 </button>
               </>
             ) : (
               <>
-                <span className="text-sm text-text-muted">Guest</span>
+                <span className="text-sm text-text-muted">{t("auth.guest")}</span>
                 <Link
                   href="/login"
                   className="text-xs text-accent hover:underline transition-colors"
                 >
-                  Sign in
+                  {t("auth.signIn")}
                 </Link>
               </>
             )}
@@ -98,14 +109,14 @@ export function DashboardShell({
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                title={locked ? "Sign in to view" : undefined}
+                title={locked ? t("nav.signInToView") : undefined}
                 className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${
                   active
                     ? "bg-accent/10 text-accent"
                     : "text-text-secondary hover:bg-bg-card hover:text-text-primary"
                 }`}
               >
-                <span>{item.label}</span>
+                <span>{t(item.labelKey)}</span>
                 {locked && (
                   <svg className="h-3.5 w-3.5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c0-1.1-.9-2-2-2s-2 .9-2 2v3h4v-3zM6 11V7a4 4 0 118 0v4M5 11h10v9H5v-9z" />
@@ -117,10 +128,10 @@ export function DashboardShell({
         </nav>
 
         <div className="mt-auto p-4 border-t border-border-glass text-xs text-text-muted">
-          <div>Account</div>
+          <div>{t("shell.account")}</div>
           <div className="text-text-secondary truncate">{meta.account || "—"}</div>
-          <div className="mt-2">Last updated</div>
-          <div className="text-text-secondary">{formatStamp(meta.generatedAt)}</div>
+          <div className="mt-2">{t("shell.lastUpdated")}</div>
+          <div className="text-text-secondary">{formatStamp(meta.generatedAt, locale, t("shell.never"))}</div>
         </div>
       </aside>
 
@@ -151,10 +162,10 @@ export function DashboardShell({
   );
 }
 
-function formatStamp(s: string | null): string {
-  if (!s) return "never";
+function formatStamp(s: string | null, locale: string, neverLabel: string): string {
+  if (!s) return neverLabel;
   try {
-    return new Date(s).toLocaleString("en-US", {
+    return new Date(s).toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",

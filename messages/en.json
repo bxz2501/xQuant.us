@@ -1,0 +1,72 @@
+{
+  "auth": {
+    "signIn": "Sign In",
+    "signInTagline": "Sign in to view performance",
+    "signOut": "Logout",
+    "register": "Register",
+    "createAccount": "Create Account",
+    "registerTagline": "Sign up to view trading performance",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Your password",
+    "confirmPassword": "Confirm Password",
+    "name": "Name",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "invalidCredentials": "Invalid email or password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "registrationFailed": "Registration failed",
+    "guest": "Guest"
+  },
+  "nav": {
+    "performance": "Performance",
+    "positions": "Positions",
+    "trades": "Trades",
+    "signInToView": "Sign in to view"
+  },
+  "shell": {
+    "account": "Account",
+    "lastUpdated": "Last updated",
+    "never": "never",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode",
+    "switchToChinese": "切换到中文",
+    "switchToEnglish": "Switch to English"
+  },
+  "perf": {
+    "title": "Performance vs S&P 500",
+    "subtitle": "Cumulative return since {date} ({days} trading days)",
+    "accountBalance": "Account Balance",
+    "accountReturn": "Account Return",
+    "marketReturn": "S&P 500 Return",
+    "outperformance": "Outperformance",
+    "cumulativeReturn": "Cumulative Return (%)",
+    "account": "Account",
+    "market": "S&P 500",
+    "outperform": "Outperform"
+  },
+  "positions": {
+    "title": "Current Positions",
+    "subtitle": "Active trades"
+  },
+  "trades": {
+    "title": "Trade History",
+    "subtitle": "All closed trades",
+    "openPositions": "Open Positions",
+    "filterPlaceholder": "Filter by symbol…",
+    "noTrades": "No trades yet.",
+    "symbol": "Symbol",
+    "shares": "Shares",
+    "enter": "Enter",
+    "exit": "Exit",
+    "current": "Current",
+    "pnl": "P/L",
+    "enterTime": "Enter Time",
+    "exitTime": "Exit Time",
+    "days": "Days"
+  },
+  "errors": {
+    "loadFailed": "load failed"
+  }
+}

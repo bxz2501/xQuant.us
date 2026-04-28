@@ -6,9 +6,11 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/components/locale-provider";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useLocale();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +23,7 @@ export default function RegisterPage() {
     setError("");
 
     if (password !== confirm) {
-      setError("Passwords do not match");
+      setError(t("auth.passwordsDoNotMatch"));
       return;
     }
 
@@ -34,7 +36,7 @@ export default function RegisterPage() {
 
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error || "Registration failed");
+      setError(data.error || t("auth.registrationFailed"));
       setLoading(false);
       return;
     }
@@ -45,8 +47,8 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md p-8">
-        <h1 className="text-2xl font-bold text-text-primary mb-2">Create Account</h1>
-        <p className="text-text-secondary mb-6">Sign up to view trading performance</p>
+        <h1 className="text-2xl font-bold text-text-primary mb-2">{t("auth.createAccount")}</h1>
+        <p className="text-text-secondary mb-6">{t("auth.registerTagline")}</p>
 
         {error && (
           <div className="mb-4 rounded-lg bg-danger/10 border border-danger/20 px-4 py-3 text-sm text-danger">
@@ -55,19 +57,19 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-          <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
-          <Input label="Confirm Password" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
+          <Input label={t("auth.name")} value={name} onChange={(e) => setName(e.target.value)} required />
+          <Input label={t("auth.email")} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <Input label={t("auth.password")} type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+          <Input label={t("auth.confirmPassword")} type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
           <Button type="submit" loading={loading} className="w-full">
-            Create Account
+            {t("auth.createAccount")}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-text-muted">
-          Already have an account?{" "}
+          {t("auth.haveAccount")}{" "}
           <Link href="/login" className="text-accent hover:underline">
-            Sign in
+            {t("auth.signIn")}
           </Link>
         </p>
       </Card>

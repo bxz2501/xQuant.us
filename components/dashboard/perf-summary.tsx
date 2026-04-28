@@ -1,28 +1,32 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
+import { useLocale } from "@/components/locale-provider";
 import type { OutPerformRow } from "@/lib/perf";
 
 export function PerfSummary({ rows }: { rows: OutPerformRow[] }) {
+  const { t } = useLocale();
   if (rows.length === 0) return null;
   const latest = rows[rows.length - 1];
 
   const items: { label: string; value: string; color: string }[] = [
     {
-      label: "Account Balance",
+      label: t("perf.accountBalance"),
       value: usd(latest.rawBalance),
       color: "text-text-primary",
     },
     {
-      label: "Account Return",
+      label: t("perf.accountReturn"),
       value: pct(latest.accountReturn),
       color: latest.accountReturn >= 0 ? "text-success" : "text-danger",
     },
     {
-      label: "S&P 500 Return",
+      label: t("perf.marketReturn"),
       value: pct(latest.marketReturn),
       color: latest.marketReturn >= 0 ? "text-success" : "text-danger",
     },
     {
-      label: "Outperformance",
+      label: t("perf.outperformance"),
       value: pct(latest.outPerform),
       color: latest.outPerform >= 0 ? "text-success" : "text-danger",
     },

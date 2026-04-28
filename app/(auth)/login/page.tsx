@@ -9,10 +9,12 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
+import { useLocale } from "@/components/locale-provider";
 
 export default function LoginPage() {
   const router = useRouter();
   const { theme } = useTheme();
+  const { t } = useLocale();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ export default function LoginPage() {
     const result = await signIn("credentials", { email, password, redirect: false });
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError(t("auth.invalidCredentials"));
       setLoading(false);
     } else {
       router.push("/dashboard");
@@ -45,7 +47,7 @@ export default function LoginPage() {
           priority
           className="h-10 w-auto mb-2"
         />
-        <p className="text-text-secondary mb-6">Sign in to view performance</p>
+        <p className="text-text-secondary mb-6">{t("auth.signInTagline")}</p>
 
         {error && (
           <div className="mb-4 rounded-lg bg-danger/10 border border-danger/20 px-4 py-3 text-sm text-danger">
@@ -55,30 +57,30 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            label="Email"
+            label={t("auth.email")}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder={t("auth.emailPlaceholder")}
             required
           />
           <Input
-            label="Password"
+            label={t("auth.password")}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
+            placeholder={t("auth.passwordPlaceholder")}
             required
           />
           <Button type="submit" loading={loading} className="w-full">
-            Sign In
+            {t("auth.signIn")}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-text-muted">
-          Don&apos;t have an account?{" "}
+          {t("auth.noAccount")}{" "}
           <Link href="/register" className="text-accent hover:underline">
-            Register
+            {t("auth.register")}
           </Link>
         </p>
       </Card>

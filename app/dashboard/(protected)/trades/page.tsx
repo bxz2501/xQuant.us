@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { TradesTable } from "@/components/dashboard/trades-table";
 import { Spinner } from "@/components/ui/spinner";
+import { useLocale } from "@/components/locale-provider";
 import type { TradeRowWithPnl } from "@/lib/perf";
 
 export default function TradesPage() {
+  const { t } = useLocale();
   const [rows, setRows] = useState<TradeRowWithPnl[] | null>(null);
   const [error, setError] = useState("");
 
@@ -16,8 +18,8 @@ export default function TradesPage() {
         if (d.error) setError(d.error);
         else setRows(d.rows as TradeRowWithPnl[]);
       })
-      .catch((e) => setError(e instanceof Error ? e.message : "load failed"));
-  }, []);
+      .catch((e) => setError(e instanceof Error ? e.message : t("errors.loadFailed")));
+  }, [t]);
 
   if (error) {
     return (
@@ -31,8 +33,8 @@ export default function TradesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-text-primary">Trade History</h2>
-        <p className="text-sm text-text-secondary mt-1">All closed trades</p>
+        <h2 className="text-xl font-bold text-text-primary">{t("trades.title")}</h2>
+        <p className="text-sm text-text-secondary mt-1">{t("trades.subtitle")}</p>
       </div>
       <TradesTable trades={rows} showExit />
     </div>

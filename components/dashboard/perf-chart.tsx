@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { createChart, ColorType, LineSeries, type Time } from "lightweight-charts";
 import { useTheme } from "@/components/theme-provider";
+import { useLocale } from "@/components/locale-provider";
 import { Card } from "@/components/ui/card";
 import type { OutPerformRow } from "@/lib/perf";
 
@@ -14,6 +15,7 @@ export function PerfChart({ data }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
+  const { t } = useLocale();
 
   useEffect(() => {
     if (!containerRef.current || data.length === 0) return;
@@ -85,7 +87,11 @@ export function PerfChart({ data }: Props) {
         return;
       }
       tooltip.style.display = "block";
-      tooltip.innerHTML = renderTooltip(row, isDark);
+      tooltip.innerHTML = renderTooltip(row, isDark, {
+        account: t("perf.account"),
+        market: t("perf.market"),
+        outperform: t("perf.outperform"),
+      });
 
       const w = containerRef.current.clientWidth;
       const tw = tooltip.offsetWidth;
@@ -111,15 +117,15 @@ export function PerfChart({ data }: Props) {
       chart.unsubscribeCrosshairMove(crosshairHandler);
       chart.remove();
     };
-  }, [data, theme]);
+  }, [data, theme, t]);
 
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-text-secondary">Cumulative Return (%)</h3>
+        <h3 className="text-sm font-semibold text-text-secondary">{t("perf.cumulativeReturn")}</h3>
         <div className="flex gap-3 text-xs text-text-muted">
-          <span><span className="inline-block w-3 h-0.5 bg-success align-middle mr-1" />Account</span>
-          <span><span className="inline-block w-3 h-0.5 bg-text-secondary align-middle mr-1" />S&P 500</span>
+          <span><span className="inline-block w-3 h-0.5 bg-success align-middle mr-1" />{t("perf.account")}</span>
+          <span><span className="inline-block w-3 h-0.5 bg-text-secondary align-middle mr-1" />{t("perf.market")}</span>
         </div>
       </div>
       <div ref={containerRef} className="relative">
@@ -133,16 +139,21 @@ export function PerfChart({ data }: Props) {
   );
 }
 
-function renderTooltip(row: OutPerformRow, isDark: boolean): string {
+function renderTooltip(
+  row: OutPerformRow,
+  isDark: boolean,
+  labels: { account: string; market: string; outperform: string },
+): string {
   const accColor = isDark ? "#22c55e" : "#16a34a";
   const mktColor = isDark ? "#94a3b8" : "#64748b";
   const outColor = row.outPerform >= 0 ? (isDark ? "#22c55e" : "#16a34a") : (isDark ? "#ef4444" : "#dc2626");
+  const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
   return `
     <div class="text-text-muted mb-1">${row.date}</div>
     <div class="grid grid-cols-[auto_auto] gap-x-3 gap-y-0.5">
-      <span style="color:${accColor}">Account</span><span class="text-right font-mono">${pct(row.accountReturn)}</span>
-      <span style="color:${mktColor}">S&amp;P 500</span><span class="text-right font-mono">${pct(row.marketReturn)}</span>
-      <span class="text-text-secondary">Outperform</span><span class="text-right font-mono" style="color:${outColor}">${pct(row.outPerform)}</span>
+      <span style="color:${accColor}">${esc(labels.account)}</span><span class="text-right font-mono">${pct(row.accountReturn)}</span>
+      <span style="color:${mktColor}">${esc(labels.market)}</span><span class="text-right font-mono">${pct(row.marketReturn)}</span>
+      <span class="text-text-secondary">${esc(labels.outperform)}</span><span class="text-right font-mono" style="color:${outColor}">${pct(row.outPerform)}</span>
     </div>
   `;
 }

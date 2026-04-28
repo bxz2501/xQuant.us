@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { useLocale } from "@/components/locale-provider";
 import type { TradeRowWithPnl } from "@/lib/perf";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 type SortKey = "enterTime" | "exitTime" | "symbol1" | "pnl";
 
 export function TradesTable({ trades, showExit = true }: Props) {
+  const { locale, t } = useLocale();
   const [sortKey, setSortKey] = useState<SortKey>("enterTime");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [filter, setFilter] = useState("");
@@ -46,7 +48,7 @@ export function TradesTable({ trades, showExit = true }: Props) {
   if (trades.length === 0) {
     return (
       <Card className="p-6">
-        <p className="text-sm text-text-muted text-center">No trades yet.</p>
+        <p className="text-sm text-text-muted text-center">{t("trades.noTrades")}</p>
       </Card>
     );
   }
@@ -55,13 +57,13 @@ export function TradesTable({ trades, showExit = true }: Props) {
     <Card className="p-4">
       <div className="flex items-center justify-between mb-3 gap-3">
         <h3 className="text-sm font-semibold text-text-secondary">
-          {showExit ? "Trade History" : "Open Positions"} ({sorted.length})
+          {showExit ? t("trades.title") : t("trades.openPositions")} ({sorted.length})
         </h3>
         <input
           type="search"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          placeholder="Filter by symbol…"
+          placeholder={t("trades.filterPlaceholder")}
           className="rounded-lg border border-border-glass bg-bg-secondary px-2 py-1 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
         />
       </div>
@@ -69,38 +71,38 @@ export function TradesTable({ trades, showExit = true }: Props) {
         <table className="w-full text-sm">
           <thead className="sticky top-0 bg-bg-secondary">
             <tr className="border-b border-border-glass text-text-muted text-xs">
-              <Th onClick={() => toggleSort("symbol1")} active={sortKey === "symbol1"} dir={sortDir}>Symbol</Th>
-              <th className="text-right py-2 px-2">Shares</th>
-              <th className="text-right py-2 px-2">Enter</th>
+              <Th onClick={() => toggleSort("symbol1")} active={sortKey === "symbol1"} dir={sortDir}>{t("trades.symbol")}</Th>
+              <th className="text-right py-2 px-2">{t("trades.shares")}</th>
+              <th className="text-right py-2 px-2">{t("trades.enter")}</th>
               {showExit ? (
-                <th className="text-right py-2 px-2">Exit</th>
+                <th className="text-right py-2 px-2">{t("trades.exit")}</th>
               ) : (
-                <th className="text-right py-2 px-2">Current</th>
+                <th className="text-right py-2 px-2">{t("trades.current")}</th>
               )}
               <Th onClick={() => toggleSort("pnl")} active={sortKey === "pnl"} dir={sortDir} align="right">
-                P/L
+                {t("trades.pnl")}
               </Th>
-              <Th onClick={() => toggleSort("enterTime")} active={sortKey === "enterTime"} dir={sortDir}>Enter Time</Th>
-              {showExit && <Th onClick={() => toggleSort("exitTime")} active={sortKey === "exitTime"} dir={sortDir}>Exit Time</Th>}
-              <th className="text-right py-2 px-2">Days</th>
+              <Th onClick={() => toggleSort("enterTime")} active={sortKey === "enterTime"} dir={sortDir}>{t("trades.enterTime")}</Th>
+              {showExit && <Th onClick={() => toggleSort("exitTime")} active={sortKey === "exitTime"} dir={sortDir}>{t("trades.exitTime")}</Th>}
+              <th className="text-right py-2 px-2">{t("trades.days")}</th>
             </tr>
           </thead>
           <tbody>
-            {sorted.map((t) => {
-              const days = daysBetween(t.enterTime, showExit ? t.exitTime : new Date().toISOString());
+            {sorted.map((row) => {
+              const days = daysBetween(row.enterTime, showExit ? row.exitTime : new Date().toISOString());
               return (
-                <tr key={t.id} className="border-b border-border-glass/50 hover:bg-white/[0.02]">
-                  <td className="py-1.5 px-2 text-text-primary">{t.symbol1}</td>
-                  <td className="py-1.5 px-2 text-right text-text-secondary">{fmtNum(t.share1)}</td>
-                  <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.enterPrice1)}</td>
+                <tr key={row.id} className="border-b border-border-glass/50 hover:bg-white/[0.02]">
+                  <td className="py-1.5 px-2 text-text-primary">{row.symbol1}</td>
+                  <td className="py-1.5 px-2 text-right text-text-secondary">{fmtNum(row.share1)}</td>
+                  <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(row.enterPrice1)}</td>
                   {showExit ? (
-                    <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.exitPrice1)}</td>
+                    <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(row.exitPrice1)}</td>
                   ) : (
-                    <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.currentPrice)}</td>
+                    <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(row.currentPrice)}</td>
                   )}
-                  <td className={`py-1.5 px-2 text-right font-mono ${pnlColor(t.pnl)}`}>{fmtPnl(t.pnl)}</td>
-                  <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(t.enterTime)}</td>
-                  {showExit && <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(t.exitTime)}</td>}
+                  <td className={`py-1.5 px-2 text-right font-mono ${pnlColor(row.pnl)}`}>{fmtPnl(row.pnl)}</td>
+                  <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(row.enterTime, locale)}</td>
+                  {showExit && <td className="py-1.5 px-2 text-text-secondary text-xs">{fmtTime(row.exitTime, locale)}</td>}
                   <td className="py-1.5 px-2 text-right text-text-secondary">{days ?? "—"}</td>
                 </tr>
               );
@@ -160,10 +162,10 @@ function fmtNum(v: number): string {
   return v % 1 === 0 ? v.toFixed(0) : v.toFixed(2);
 }
 
-function fmtTime(s: string | null): string {
+function fmtTime(s: string | null, locale: string): string {
   if (!s) return "—";
   try {
-    return new Date(s).toLocaleString("en-US", {
+    return new Date(s).toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
       month: "short",
       day: "numeric",
       year: "2-digit",

@@ -1,0 +1,72 @@
+{
+  "auth": {
+    "signIn": "登录",
+    "signInTagline": "登录以查看业绩",
+    "signOut": "退出",
+    "register": "注册",
+    "createAccount": "创建账户",
+    "registerTagline": "注册以查看交易业绩",
+    "email": "邮箱",
+    "emailPlaceholder": "you@example.com",
+    "password": "密码",
+    "passwordPlaceholder": "请输入密码",
+    "confirmPassword": "确认密码",
+    "name": "姓名",
+    "noAccount": "还没有账户？",
+    "haveAccount": "已有账户？",
+    "invalidCredentials": "邮箱或密码错误",
+    "passwordsDoNotMatch": "两次输入的密码不一致",
+    "registrationFailed": "注册失败",
+    "guest": "访客"
+  },
+  "nav": {
+    "performance": "业绩",
+    "positions": "持仓",
+    "trades": "交易",
+    "signInToView": "登录后可查看"
+  },
+  "shell": {
+    "account": "账户",
+    "lastUpdated": "最后更新",
+    "never": "无",
+    "switchToDark": "切换到深色模式",
+    "switchToLight": "切换到浅色模式",
+    "switchToChinese": "切换到中文",
+    "switchToEnglish": "Switch to English"
+  },
+  "perf": {
+    "title": "业绩对比 标普500",
+    "subtitle": "自 {date} 起累计收益（{days} 个交易日）",
+    "accountBalance": "账户余额",
+    "accountReturn": "账户收益率",
+    "marketReturn": "标普500 收益率",
+    "outperformance": "超额收益",
+    "cumulativeReturn": "累计收益率 (%)",
+    "account": "账户",
+    "market": "标普500",
+    "outperform": "超额"
+  },
+  "positions": {
+    "title": "当前持仓",
+    "subtitle": "未平仓交易"
+  },
+  "trades": {
+    "title": "交易记录",
+    "subtitle": "全部已平仓交易",
+    "openPositions": "未平仓",
+    "filterPlaceholder": "按代码筛选…",
+    "noTrades": "暂无交易。",
+    "symbol": "代码",
+    "shares": "数量",
+    "enter": "入场价",
+    "exit": "出场价",
+    "current": "当前价",
+    "pnl": "盈亏",
+    "enterTime": "入场时间",
+    "exitTime": "出场时间",
+    "days": "天数"
+  },
+  "errors": {
+    "loadFailed": "加载失败"
+  }
+}
