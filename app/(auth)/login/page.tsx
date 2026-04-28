@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -34,7 +35,14 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md p-8">
-        <h1 className="text-2xl font-bold text-text-primary mb-2">xQuant</h1>
+        <Image
+          src="/logo.png"
+          alt="xQuant"
+          width={2172}
+          height={720}
+          priority
+          className="h-10 w-auto mb-2"
+        />
         <p className="text-text-secondary mb-6">Sign in to view performance</p>
 
         {error && (

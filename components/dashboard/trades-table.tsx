@@ -9,7 +9,7 @@ interface Props {
   showExit?: boolean;
 }
 
-type SortKey = "id" | "enterTime" | "exitTime" | "symbol1" | "pnl";
+type SortKey = "enterTime" | "exitTime" | "symbol1" | "pnl";
 
 export function TradesTable({ trades, showExit = true }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>("enterTime");
@@ -69,7 +69,6 @@ export function TradesTable({ trades, showExit = true }: Props) {
         <table className="w-full text-sm">
           <thead className="sticky top-0 bg-bg-secondary">
             <tr className="border-b border-border-glass text-text-muted text-xs">
-              <Th onClick={() => toggleSort("id")} active={sortKey === "id"} dir={sortDir}>#</Th>
               <Th onClick={() => toggleSort("symbol1")} active={sortKey === "symbol1"} dir={sortDir}>Symbol</Th>
               <th className="text-right py-2 px-2">Shares</th>
               <th className="text-right py-2 px-2">Enter</th>
@@ -91,7 +90,6 @@ export function TradesTable({ trades, showExit = true }: Props) {
               const days = daysBetween(t.enterTime, showExit ? t.exitTime : new Date().toISOString());
               return (
                 <tr key={t.id} className="border-b border-border-glass/50 hover:bg-white/[0.02]">
-                  <td className="py-1.5 px-2 text-text-muted text-xs">{t.id}</td>
                   <td className="py-1.5 px-2 text-text-primary">{t.symbol1}</td>
                   <td className="py-1.5 px-2 text-right text-text-secondary">{fmtNum(t.share1)}</td>
                   <td className="py-1.5 px-2 text-right text-text-secondary">{fmtPrice(t.enterPrice1)}</td>

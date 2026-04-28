@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -39,7 +40,14 @@ export function DashboardShell({
       >
         <div className="p-4 border-b border-border-glass">
           <div className="flex items-center justify-between">
-            <h1 className="text-lg font-bold text-text-primary">xQuant</h1>
+            <Image
+              src="/logo.png"
+              alt="xQuant"
+              width={2172}
+              height={720}
+              priority
+              className="h-8 w-auto"
+            />
             <button
               onClick={toggleTheme}
               className="p-1.5 rounded-lg hover:bg-bg-card transition-colors cursor-pointer text-text-muted hover:text-text-primary"
@@ -126,7 +134,14 @@ export function DashboardShell({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 className="text-lg font-bold">xQuant</h1>
+          <Image
+            src="/logo.png"
+            alt="xQuant"
+            width={2172}
+            height={720}
+            priority
+            className="h-7 w-auto"
+          />
           <div className="w-6" />
         </div>
 
