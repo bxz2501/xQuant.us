@@ -43,7 +43,7 @@ export function DashboardShell({
         <div className="p-4 border-b border-border-glass">
           <div className="flex items-center justify-between">
             <Image
-              src={theme === "dark" ? "/logo.png" : "/logo-light.png"}
+              src={logoSrc(theme, locale)}
               alt="xQuant"
               width={2172}
               height={720}
@@ -105,10 +105,11 @@ export function DashboardShell({
             const active = pathname === item.href;
             const locked = item.protected && !userName;
             return (
-              <Link
+              <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
+                aria-current={active ? "page" : undefined}
                 title={locked ? t("nav.signInToView") : undefined}
                 className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${
                   active
@@ -122,7 +123,7 @@ export function DashboardShell({
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c0-1.1-.9-2-2-2s-2 .9-2 2v3h4v-3zM6 11V7a4 4 0 118 0v4M5 11h10v9H5v-9z" />
                   </svg>
                 )}
-              </Link>
+              </a>
             );
           })}
         </nav>
@@ -146,7 +147,7 @@ export function DashboardShell({
             </svg>
           </button>
           <Image
-            src={theme === "dark" ? "/logo.png" : "/logo-light.png"}
+            src={logoSrc(theme, locale)}
             alt="xQuant"
             width={2172}
             height={720}
@@ -160,6 +161,13 @@ export function DashboardShell({
       </main>
     </div>
   );
+}
+
+function logoSrc(theme: string, locale: string): string {
+  const dark = theme === "dark";
+  const zh = locale === "zh";
+  if (zh) return dark ? "/logo-zh.png" : "/logo-light-zh.png";
+  return dark ? "/logo.png" : "/logo-light.png";
 }
 
 function formatStamp(s: string | null, locale: string, neverLabel: string): string {

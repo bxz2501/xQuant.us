@@ -14,7 +14,7 @@ import { useLocale } from "@/components/locale-provider";
 export default function LoginPage() {
   const router = useRouter();
   const { theme } = useTheme();
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -40,7 +40,11 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md p-8">
         <Image
-          src={theme === "dark" ? "/logo.png" : "/logo-light.png"}
+          src={
+            locale === "zh"
+              ? theme === "dark" ? "/logo-zh.png" : "/logo-light-zh.png"
+              : theme === "dark" ? "/logo.png" : "/logo-light.png"
+          }
           alt="xQuant"
           width={2172}
           height={720}
