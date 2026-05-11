@@ -13,6 +13,7 @@ const NAV = [
   { href: "/dashboard", labelKey: "nav.performance", protected: false },
   { href: "/dashboard/positions", labelKey: "nav.positions", protected: true },
   { href: "/dashboard/trades", labelKey: "nav.trades", protected: true },
+  { href: "/dashboard/faq", labelKey: "nav.faq", protected: false },
 ];
 
 export function DashboardShell({
@@ -42,14 +43,16 @@ export function DashboardShell({
       >
         <div className="p-4 border-b border-border-glass">
           <div className="flex items-center justify-between">
-            <Image
-              src={logoSrc(theme, locale)}
-              alt="xQuant"
-              width={2172}
-              height={720}
-              priority
-              className="h-8 w-auto"
-            />
+            <Link href="/dashboard" onClick={() => setOpen(false)} aria-label="xQuant home">
+              <Image
+                src={logoSrc(theme, locale)}
+                alt="xQuant"
+                width={2172}
+                height={720}
+                priority
+                className="h-8 w-auto"
+              />
+            </Link>
             <div className="flex items-center gap-1">
               <button
                 onClick={toggleLocale}
@@ -146,14 +149,16 @@ export function DashboardShell({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <Image
-            src={logoSrc(theme, locale)}
-            alt="xQuant"
-            width={2172}
-            height={720}
-            priority
-            className="h-7 w-auto"
-          />
+          <Link href="/dashboard" aria-label="xQuant home">
+            <Image
+              src={logoSrc(theme, locale)}
+              alt="xQuant"
+              width={2172}
+              height={720}
+              priority
+              className="h-7 w-auto"
+            />
+          </Link>
           <div className="w-6" />
         </div>
 

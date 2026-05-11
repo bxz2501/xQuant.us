@@ -23,6 +23,7 @@
     "performance": "业绩",
     "positions": "持仓",
     "trades": "交易",
+    "faq": "常见问题",
     "signInToView": "登录后可查看"
   },
   "shell": {
@@ -49,6 +50,10 @@
   "positions": {
     "title": "当前持仓",
     "subtitle": "未平仓交易"
+  },
+  "faq": {
+    "title": "常见问题",
+    "subtitle": "关于策略与如何参与的常见疑问"
   },
   "trades": {
     "title": "交易记录",

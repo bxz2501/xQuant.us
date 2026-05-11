@@ -1,7 +1,6 @@
-import { getDb } from "./db";
+import type Database from "better-sqlite3";
 
-export function initSchema() {
-  const db = getDb();
+export function initSchema(db: Database.Database) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,5 +11,3 @@ export function initSchema() {
     )
   `);
 }
-
-initSchema();

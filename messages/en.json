@@ -23,6 +23,7 @@
     "performance": "Performance",
     "positions": "Positions",
     "trades": "Trades",
+    "faq": "FAQ",
     "signInToView": "Sign in to view"
   },
   "shell": {
@@ -49,6 +50,10 @@
   "positions": {
     "title": "Current Positions",
     "subtitle": "Active trades"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Common questions about the strategy and how to participate"
   },
   "trades": {
     "title": "Trade History",

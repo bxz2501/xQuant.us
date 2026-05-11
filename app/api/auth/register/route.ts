@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getDb } from "@/lib/db";
-import "@/lib/db-schema";
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
