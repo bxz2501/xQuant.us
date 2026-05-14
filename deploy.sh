@@ -1,9 +1,9 @@
 #!/bin/bash
-# Deploy perf-site to 104.64.202.162.
+# Deploy perf-site to 172.235.202.56.
 # Usage: ./deploy.sh
 set -euo pipefail
 
-REMOTE="${REMOTE:-root@104.64.202.162}"
+REMOTE="${REMOTE:-root@172.235.202.56}"
 APP_DIR="${APP_DIR:-/opt/perf-site}"
 
 cd "$(dirname "$0")"
@@ -24,7 +24,8 @@ rsync -az --delete \
   .next/standalone/ "$REMOTE":"$APP_DIR"/
 
 echo "==> chown + restart"
-ssh "$REMOTE" "chown -R perfsite:perfsite $APP_DIR && systemctl restart perf-site && sleep 2 && systemctl is-active perf-site"
+# systemd unit's ReadWritePaths requires .next/cache to exist; rsync --delete removes it.
+ssh "$REMOTE" "mkdir -p $APP_DIR/.next/cache && chown -R perfsite:perfsite $APP_DIR && systemctl restart perf-site && sleep 2 && systemctl is-active perf-site"
 
 echo "==> health check"
 curl -sf -o /dev/null -w "%{http_code}\n" https://xquant.us/login

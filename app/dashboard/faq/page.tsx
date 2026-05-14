@@ -18,6 +18,10 @@ const FAQ_EN: Entry[] = [
     a: "If you don't follow my approach but tweak the parameters and place orders ahead of mine, it becomes very hard for me to keep trading. Losing my own money is one thing, but that would be very unfair to my investors and put them at risk — I can't do that.",
   },
   {
+  q: "Why are you so selfish? Why do you keep the strategy to yourself and not share it?",
+  a: "If I had something that could end world hunger, I would share it right away. The problem with a trading strategy is that it took me a decade to develop, and if I shared it, the trading opportunity would disappear almost immediately. It is morally and legally impossible for me to share it.",
+},
+  {
     q: "I want to research trading programs. What do I need to know?",
     a: "Everyone has a different research direction. My suggestion: pick up some finance knowledge about stocks, statistics, programming, AI, databases, network security, and so on.",
   },
@@ -45,6 +49,10 @@ const FAQ_EN: Entry[] = [
     q: "I graduated from a top university — if I wanted to study stock trading, I should do better than you.",
     a: "Completely agree. The trading API has a free-text field on each order — you can put your university's name there.",
   },
+  {
+  q: "I am not greedy. With more than 100 billion dollars traded in the stock market every day, I don't believe I can't find a way to make 1,000 dollars a day.",
+  a: "It is possible, but incredibly difficult. The reason is that other market participants are not grass eaters. Firms like Citadel Securities, Jane Street, Renaissance Technologies, and Two Sigma would erase an opportunity even if it were worth less than a penny. Competing against them is like bringing a knife to a nuclear war.",
+},
   {
     q: "Which book got you started in trading?",
     a: "I never read one. I started after seeing \"experts\" on TV say stocks tend to keep rising after breaking the 52-week high and keep falling after breaking the 52-week low. So I wrote a program to test it — turned out to be groundless. Then experts said stocks would be cheaper before April 15 because everyone has to sell to pay taxes. I wrote a program to short stocks on April 1 and cover on April 15 — and it didn't make money either.",
@@ -81,6 +89,10 @@ const FAQ_ZH: Entry[] = [
     a: "如果你不照我的方法，把参数调在我之前下单，我的交易就很难继续了，我自己输了没关系，但这对我的投资者非常不公平，也给他们带来风险，我不能这么做。",
   },
   {
+  q: "你为什么这么自私？为什么把策略藏着，不愿意分享？",
+  a: "如果我拥有的是能够解决世界饥饿的问题，我会立刻公开分享。问题在于，交易策略不一样——它花了我十年时间才开发出来，而且一旦公开，交易机会很快就会消失。这不仅会影响我自己，也会影响信任我的投资人。从道德和法律上，我都不能这样做。",
+},
+  {
     q: "我想研究股票交易程序，需要哪些知识？",
     a: "每个人的研究方向不一样，我的建议是你需要学点关于股票的金融知识，统计学，编程，人工智能，数据库，网络安全等等。",
   },
@@ -108,6 +120,10 @@ const FAQ_ZH: Entry[] = [
     q: "我是名牌大学毕业，应该可以比你做得更好，如果我想研究股票的话。",
     a: "完全同意。API 在下单时有一个自由字节的 field，你可以把你大学名字写在上面。",
   },
+  {
+  q: "我不贪心。股市每天交易额超过上千亿美元，我不相信连一天赚1000美元的机会都找不到。",
+  a: "理论上是有可能的，但实际上极其困难。原因在于，市场里的其他参与者都不是吃素的。像 Citadel Securities、Jane Street、Renaissance Technologies、Two Sigma 这样的公司，哪怕只有不到一分钱的机会，也会被它们迅速消灭掉。和它们竞争，就像拿着小刀参加核战争。",
+},
   {
     q: "你是看哪本书开始研究交易的？",
     a: "没有看过书。开始研究是从电视看到\"专家\"说股票突破 52 星期高点就会往上再涨一阵，低于 52 星期低点就会继续跌一些。于是我写程序验证，发现毫无根据。接着是电视上专家说 4 月 15 日之前因为大家需要卖股票去交税，股票会比较低。我写程序在 4 月 1 日卖空股票，4 月 15 日低点买回来，结果发现并没有赚钱。",
