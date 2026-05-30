@@ -36,8 +36,9 @@
     "switchToEnglish": "Switch to English"
   },
   "perf": {
-    "title": "Performance vs S&P 500",
+    "title": "Performance vs S&P 500*",
     "subtitle": "Cumulative return since {date} ({days} trading days)",
+    "marketSource": "* S&P 500 returns derived from ES mini (ES=F) futures, will change to SPY in next deployment",
     "accountBalance": "Account Balance",
     "accountReturn": "Account Return",
     "marketReturn": "S&P 500 Return",

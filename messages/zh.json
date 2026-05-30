@@ -36,8 +36,9 @@
     "switchToEnglish": "Switch to English"
   },
   "perf": {
-    "title": "业绩对比 标普500",
+    "title": "业绩对比 标普500*",
     "subtitle": "自 {date} 起累计收益（{days} 个交易日）",
+    "marketSource": "* 标普500 收益基于 ES 迷你期货（ES=F），下一版本将改为 SPY",
     "accountBalance": "账户余额",
     "accountReturn": "账户收益率",
     "marketReturn": "标普500 收益率",

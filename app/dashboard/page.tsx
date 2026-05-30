@@ -35,7 +35,10 @@ export default function PerformancePage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-text-primary">{t("perf.title")}</h2>
-        <p className="text-sm text-text-secondary mt-1">
+        <p className="text-xs text-text-secondary/70 mt-1">
+          {t("perf.marketSource")}
+        </p>
+        <p className="text-sm text-text-secondary mt-0.5">
           {t("perf.subtitle", { date: rows[0]?.date ?? "—", days: rows.length })}
         </p>
       </div>
