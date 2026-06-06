@@ -46,6 +46,10 @@ const FAQ_EN: Entry[] = [
     a: "Backtesting has been successful. I'm currently building the program for automated trading.",
   },
   {
+    q: "I graduated from a top university — if I wanted to study stock trading, I should do better than you.",
+    a: "Completely agree. The trading API has a free-text field on each order — you can put your university's name there.",
+  },
+  {
   q: "I am not greedy. With more than 100 billion dollars traded in the stock market every day, I don't believe I can't find a way to make 1,000 dollars a day.",
   a: "It is possible, but incredibly difficult. The reason is that other market participants are not grass eaters. Firms like Citadel Securities, Jane Street, Renaissance Technologies, and Two Sigma would erase an opportunity even if it were worth less than a penny. Competing against them is like bringing a knife to a nuclear war.",
 },
@@ -111,6 +115,10 @@ const FAQ_ZH: Entry[] = [
   {
     q: "你有没有做中国大陆股票？",
     a: "测试已经成功，正在写程序进行自动交易。敬请期待",
+  },
+  {
+    q: "我是名牌大学毕业，应该可以比你做得更好，如果我想研究股票的话。",
+    a: "完全同意。API 在下单时有一个自由字节的 field，你可以把你大学名字写在上面。",
   },
   {
   q: "我不贪心。股市每天交易额超过上千亿美元，我不相信连一天赚1000美元的机会都找不到。",
