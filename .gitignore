@@ -4,3 +4,4 @@ node_modules
 users.db
 users.db-*
 .DS_Store
+local-data

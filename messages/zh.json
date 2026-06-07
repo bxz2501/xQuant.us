@@ -46,7 +46,12 @@
     "cumulativeReturn": "累计收益率 (%)",
     "account": "账户",
     "market": "标普500",
-    "outperform": "超额"
+    "outperform": "超额",
+    "range": {
+      "ytd": "今年",
+      "1y": "近一年",
+      "all": "全部"
+    }
   },
   "positions": {
     "title": "当前持仓",

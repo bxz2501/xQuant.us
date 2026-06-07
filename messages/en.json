@@ -46,7 +46,12 @@
     "cumulativeReturn": "Cumulative Return (%)",
     "account": "Account",
     "market": "S&P 500",
-    "outperform": "Outperform"
+    "outperform": "Outperform",
+    "range": {
+      "ytd": "YTD",
+      "1y": "1Y",
+      "all": "All"
+    }
   },
   "positions": {
     "title": "Current Positions",
