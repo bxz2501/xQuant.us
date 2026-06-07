@@ -7,9 +7,9 @@ import { Spinner } from "@/components/ui/spinner";
 import { useLocale } from "@/components/locale-provider";
 import type { OutPerformRow } from "@/lib/perf";
 
-type Range = "ytd" | "1y" | "all";
+type Range = "ytd" | "1y" | "2025" | "all";
 
-const RANGES: Range[] = ["ytd", "1y", "all"];
+const RANGES: Range[] = ["ytd", "1y", "2025", "all"];
 
 export default function PerformancePage() {
   const { t } = useLocale();
@@ -78,8 +78,12 @@ function filterAndRebase(rows: OutPerformRow[], range: Range): OutPerformRow[] {
 
   const latest = rows[rows.length - 1].date;
   let anchorDate: string;
+  let endDate: string | null = null;
   if (range === "ytd") {
     anchorDate = `${Number(latest.slice(0, 4)) - 1}-12-31`;
+  } else if (range === "2025") {
+    anchorDate = "2024-12-31";
+    endDate = "2025-12-31";
   } else {
     const d = new Date(`${latest}T00:00:00Z`);
     d.setUTCFullYear(d.getUTCFullYear() - 1);
@@ -93,7 +97,8 @@ function filterAndRebase(rows: OutPerformRow[], range: Range): OutPerformRow[] {
       break;
     }
   }
-  const sliced = anchorIdx >= 0 ? rows.slice(anchorIdx) : rows;
+  let sliced = anchorIdx >= 0 ? rows.slice(anchorIdx) : rows;
+  if (endDate) sliced = sliced.filter((r) => r.date <= endDate);
   if (sliced.length === 0) return rows;
 
   const baseAcct = 1 + sliced[0].accountReturn;
