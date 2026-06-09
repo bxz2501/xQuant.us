@@ -51,7 +51,7 @@ const FAQ_EN: Entry[] = [
   },
   {
   q: "I am not greedy. With more than 100 billion dollars traded in the stock market every day, I don't believe I can't find a way to make 1,000 dollars a day.",
-  a: "It is possible, but incredibly difficult. The reason is that other market participants are not grass eaters. Firms like Citadel Securities, Jane Street, Renaissance Technologies, and Two Sigma would erase an opportunity even if it were worth less than a penny. Competing against them is like bringing a knife to a nuclear war.",
+  a: "It is possible, but incredibly difficult. The reason is that other market participants are not grass eaters. Firms like Akuna Capital, Citadel Securities, Jane Street, Renaissance Technologies, and Two Sigma would erase an opportunity even if it were worth less than a penny. Competing against them is like bringing a knife to a nuclear war.",
 },
   {
     q: "Which book got you started in trading?",
@@ -122,7 +122,7 @@ const FAQ_ZH: Entry[] = [
   },
   {
   q: "我不贪心。股市每天交易额超过上千亿美元，我不相信连一天赚1000美元的机会都找不到。",
-  a: "理论上是有可能的，但实际上极其困难。原因在于，市场里的其他参与者都不是吃素的。像 Citadel Securities、Jane Street、Renaissance Technologies、Two Sigma 这样的公司，哪怕只有不到一分钱的机会，也会被它们迅速消灭掉。和它们竞争，就像拿着小刀参加核战争。",
+  a: "理论上是有可能的，但实际上极其困难。原因在于，市场里的其他参与者都不是吃素的。像 Akuna Capital、Citadel Securities、Jane Street、Renaissance Technologies、Two Sigma 这样的公司，哪怕只有不到一分钱的机会，也会被它们迅速消灭掉。和它们竞争，就像拿着小刀参加核战争。",
 },
   {
     q: "你是看哪本书开始研究交易的？",
