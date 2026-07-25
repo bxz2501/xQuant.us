@@ -21,6 +21,7 @@
   },
   "nav": {
     "performance": "Performance",
+    "performanceCn": "China Stocks",
     "positions": "Positions",
     "trades": "Trades",
     "faq": "FAQ",
@@ -53,6 +54,19 @@
       "2025": "2025",
       "all": "All"
     }
+  },
+  "perfCn": {
+    "title": "China Performance vs ChiNext*",
+    "subtitle": "Cumulative return since {date} ({days} trading days)",
+    "marketSource": "* Benchmark: ChiNext ETF (159915.SZ) daily close",
+    "accountBalance": "Account Balance",
+    "accountReturn": "Account Return",
+    "marketReturn": "ChiNext Return",
+    "outperformance": "Outperformance",
+    "cumulativeReturn": "Cumulative Return (%)",
+    "account": "Account",
+    "market": "ChiNext",
+    "outperform": "Outperform"
   },
   "positions": {
     "title": "Current Positions",

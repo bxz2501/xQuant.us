@@ -4,29 +4,37 @@ import { Card } from "@/components/ui/card";
 import { useLocale } from "@/components/locale-provider";
 import type { OutPerformRow } from "@/lib/perf";
 
-export function PerfSummary({ rows }: { rows: OutPerformRow[] }) {
+export function PerfSummary({
+  rows,
+  ns = "perf",
+  currency = "USD",
+}: {
+  rows: OutPerformRow[];
+  ns?: string;
+  currency?: string;
+}) {
   const { t } = useLocale();
   if (rows.length === 0) return null;
   const latest = rows[rows.length - 1];
 
   const items: { label: string; value: string; color: string }[] = [
     {
-      label: t("perf.accountBalance"),
-      value: usd(latest.rawBalance),
+      label: t(`${ns}.accountBalance`),
+      value: money(latest.rawBalance, currency),
       color: "text-text-primary",
     },
     {
-      label: t("perf.accountReturn"),
+      label: t(`${ns}.accountReturn`),
       value: pct(latest.accountReturn),
       color: latest.accountReturn >= 0 ? "text-success" : "text-danger",
     },
     {
-      label: t("perf.marketReturn"),
+      label: t(`${ns}.marketReturn`),
       value: pct(latest.marketReturn),
       color: latest.marketReturn >= 0 ? "text-success" : "text-danger",
     },
     {
-      label: t("perf.outperformance"),
+      label: t(`${ns}.outperformance`),
       value: pct(latest.outPerform),
       color: latest.outPerform >= 0 ? "text-success" : "text-danger",
     },
@@ -50,11 +58,11 @@ function pct(v: number): string {
   return `${sign}${(v * 100).toFixed(2)}%`;
 }
 
-function usd(v: number): string {
+function money(v: number, currency: string): string {
   if (!Number.isFinite(v)) return "—";
-  return v.toLocaleString("en-US", {
+  return v.toLocaleString(currency === "CNY" ? "zh-CN" : "en-US", {
     style: "currency",
-    currency: "USD",
+    currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });

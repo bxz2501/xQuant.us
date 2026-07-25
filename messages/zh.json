@@ -21,6 +21,7 @@
   },
   "nav": {
     "performance": "业绩",
+    "performanceCn": "A股业绩",
     "positions": "持仓",
     "trades": "交易",
     "faq": "常见问题",
@@ -53,6 +54,19 @@
       "2025": "2025",
       "all": "全部"
     }
+  },
+  "perfCn": {
+    "title": "A股业绩对比 创业板*",
+    "subtitle": "自 {date} 起累计收益（{days} 个交易日）",
+    "marketSource": "* 基准：创业板ETF（159915.SZ）日收盘价",
+    "accountBalance": "账户余额",
+    "accountReturn": "账户收益率",
+    "marketReturn": "创业板收益率",
+    "outperformance": "超额收益",
+    "cumulativeReturn": "累计收益率 (%)",
+    "account": "账户",
+    "market": "创业板",
+    "outperform": "超额"
   },
   "positions": {
     "title": "当前持仓",

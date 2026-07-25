@@ -38,6 +38,8 @@ export type TradeRow = {
 
 export type Meta = { generatedAt: string | null; account: string | null };
 
+export type Market = "us" | "cn";
+
 export type LatestQuote = { symbol: string; exchange: string; close: number | null; time: string | null };
 
 export type TradeRowWithPnl = TradeRow & {
@@ -118,8 +120,8 @@ function bool(v: string): boolean {
   return v === "True" || v === "true" || v === "1";
 }
 
-export async function loadOutPerform(): Promise<OutPerformRow[]> {
-  const { headers, rows } = await readCsv("outperform.csv");
+export async function loadOutPerform(market: Market = "us"): Promise<OutPerformRow[]> {
+  const { headers, rows } = await readCsv(market === "cn" ? "outperform_cn.csv" : "outperform.csv");
   const idx = (k: string) => headers.indexOf(k);
   const i = {
     date: idx("Date"),

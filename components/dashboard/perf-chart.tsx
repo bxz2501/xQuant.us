@@ -9,9 +9,10 @@ import type { OutPerformRow } from "@/lib/perf";
 
 interface Props {
   data: OutPerformRow[];
+  ns?: string;
 }
 
-export function PerfChart({ data }: Props) {
+export function PerfChart({ data, ns = "perf" }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
@@ -91,9 +92,9 @@ export function PerfChart({ data }: Props) {
       }
       tooltip.style.display = "block";
       tooltip.innerHTML = renderTooltip(row, { successHex, dangerHex, mktColor: isDark ? "#94a3b8" : "#64748b" }, {
-        account: t("perf.account"),
-        market: t("perf.market"),
-        outperform: t("perf.outperform"),
+        account: t(`${ns}.account`),
+        market: t(`${ns}.market`),
+        outperform: t(`${ns}.outperform`),
       });
 
       const w = containerRef.current.clientWidth;
@@ -120,15 +121,15 @@ export function PerfChart({ data }: Props) {
       chart.unsubscribeCrosshairMove(crosshairHandler);
       chart.remove();
     };
-  }, [data, theme, locale, t]);
+  }, [data, theme, locale, t, ns]);
 
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-text-secondary">{t("perf.cumulativeReturn")}</h3>
+        <h3 className="text-sm font-semibold text-text-secondary">{t(`${ns}.cumulativeReturn`)}</h3>
         <div className="flex gap-3 text-xs text-text-muted">
-          <span><span className="inline-block w-3 h-0.5 bg-success align-middle mr-1" />{t("perf.account")}</span>
-          <span><span className="inline-block w-3 h-0.5 bg-text-secondary align-middle mr-1" />{t("perf.market")}</span>
+          <span><span className="inline-block w-3 h-0.5 bg-success align-middle mr-1" />{t(`${ns}.account`)}</span>
+          <span><span className="inline-block w-3 h-0.5 bg-text-secondary align-middle mr-1" />{t(`${ns}.market`)}</span>
         </div>
       </div>
       <div ref={containerRef} className="relative">
