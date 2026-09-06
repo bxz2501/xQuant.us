@@ -43,7 +43,7 @@ export function DashboardShell({
       >
         <div className="p-4 border-b border-border-glass">
           <div className="flex items-center justify-between">
-            <Link href="/dashboard" onClick={() => setOpen(false)} aria-label="xQuant home">
+            <a href="/dashboard" onClick={() => setOpen(false)} aria-label="xQuant home">
               <Image
                 src={logoSrc(theme, locale)}
                 alt="xQuant"
@@ -52,7 +52,7 @@ export function DashboardShell({
                 priority
                 className="h-8 w-auto"
               />
-            </Link>
+            </a>
             <div className="flex items-center gap-1">
               <button
                 onClick={toggleLocale}
@@ -149,7 +149,7 @@ export function DashboardShell({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <Link href="/dashboard" aria-label="xQuant home">
+          <a href="/dashboard" aria-label="xQuant home">
             <Image
               src={logoSrc(theme, locale)}
               alt="xQuant"
@@ -158,7 +158,7 @@ export function DashboardShell({
               priority
               className="h-7 w-auto"
             />
-          </Link>
+          </a>
           <div className="w-6" />
         </div>
 
