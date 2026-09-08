@@ -14,11 +14,14 @@ export function PerfPage({
   ns = "perf",
   currency = "USD",
   ranges = ["ytd", "1y", "2025", "all"],
+  startDate,
 }: {
   market?: Market;
   ns?: string;
   currency?: string;
   ranges?: Range[];
+  /** Drop rows before this date and treat it as the zero-return baseline. */
+  startDate?: string;
 }) {
   const { t } = useLocale();
   const [rows, setRows] = useState<OutPerformRow[] | null>(null);
@@ -35,7 +38,11 @@ export function PerfPage({
       .catch((e) => setError(e instanceof Error ? e.message : t("errors.loadFailed")));
   }, [market, t]);
 
-  const filtered = useMemo(() => (rows ? filterAndRebase(rows, range) : null), [rows, range]);
+  const filtered = useMemo(() => {
+    if (!rows) return null;
+    const based = startDate ? rebaseFrom(rows, startDate) : rows;
+    return filterAndRebase(based, range);
+  }, [rows, range, startDate]);
 
   if (error) {
     return (
@@ -109,6 +116,22 @@ function filterAndRebase(rows: OutPerformRow[], range: Range): OutPerformRow[] {
   if (endDate) sliced = sliced.filter((r) => r.date <= endDate);
   if (sliced.length === 0) return rows;
 
+  return rebase(sliced);
+}
+
+function rebaseFrom(rows: OutPerformRow[], startDate: string): OutPerformRow[] {
+  let anchorIdx = -1;
+  for (let i = rows.length - 1; i >= 0; i--) {
+    if (rows[i].date <= startDate) {
+      anchorIdx = i;
+      break;
+    }
+  }
+  if (anchorIdx < 0) return rows;
+  return rebase(rows.slice(anchorIdx));
+}
+
+function rebase(sliced: OutPerformRow[]): OutPerformRow[] {
   const baseAcct = 1 + sliced[0].accountReturn;
   const baseMkt = 1 + sliced[0].marketReturn;
   return sliced.map((r) => {
