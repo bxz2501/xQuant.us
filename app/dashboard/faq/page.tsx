@@ -19,7 +19,7 @@ const FAQ_EN: Entry[] = [
   },
   {
   q: "Why are you so selfish? Why do you keep the strategy to yourself and not share it?",
-  a: "If I had something that could end world hunger, I would share it right away. The problem with a trading strategy is that it took me a decade to develop, and if I shared it, the trading opportunity would disappear almost immediately. It is morally and legally impossible for me to share it.",
+  a: "If what I possessed were a solution to world hunger, I would share it publicly immediately. The problem is, a trading strategy is different—it took me ten years to develop, and once it's public, the trading opportunity disappears quickly. And the world's hungry population wouldn't decrease; instead, there'd be one more.",
 },
   {
     q: "I want to research trading programs. What do I need to know?",
@@ -90,7 +90,7 @@ const FAQ_ZH: Entry[] = [
   },
   {
   q: "你为什么这么自私？为什么把策略藏着，不愿意分享？",
-  a: "如果我拥有的是能够解决世界饥饿的问题，我会立刻公开分享。问题在于，交易策略不一样——它花了我十年时间才开发出来，而且一旦公开，交易机会很快就会消失。这不仅会影响我自己，也会影响信任我的投资人。从道德和法律上，我都不能这样做。",
+  a: "如果我拥有的是能够解决世界饥饿的问题，我会立刻公开分享。问题在于，交易策略不一样——它花了我十年时间才开发出来，而且一旦公开，交易机会很快就会消失。而世界上的饥饿人口不会减少，反而会增加一个。",
 },
   {
     q: "我想研究股票交易程序，需要哪些知识？",
