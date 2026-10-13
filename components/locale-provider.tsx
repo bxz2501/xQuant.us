@@ -8,6 +8,7 @@ export type Locale = "en" | "zh";
 const DEFAULT_LOCALE: Locale = "en";
 const LOCALE_STORAGE_KEY = "locale";
 const LOCALE_CHANGE_EVENT = "xquant:locale-change";
+const GEO_LOCALE_COOKIE = "geo-locale";
 
 const dict: Record<Locale, typeof en> = { en, zh };
 
@@ -78,10 +79,21 @@ function interpolate(s: string, vars?: Vars): string {
   });
 }
 
+function isLocale(v: string | null | undefined): v is Locale {
+  return v === "en" || v === "zh";
+}
+
+// Set by middleware from the visitor's IP (zh for mainland China).
+function readGeoLocale(): Locale | null {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${GEO_LOCALE_COOKIE}=([^;]*)`));
+  return match && isLocale(match[1]) ? match[1] : null;
+}
+
 function readLocale(): Locale {
   if (typeof window === "undefined") return DEFAULT_LOCALE;
   const saved = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-  return saved === "en" || saved === "zh" ? saved : DEFAULT_LOCALE;
+  if (isLocale(saved)) return saved;
+  return readGeoLocale() ?? DEFAULT_LOCALE;
 }
 
 function subscribeLocale(onStoreChange: () => void): () => void {
