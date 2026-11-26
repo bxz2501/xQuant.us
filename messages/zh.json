@@ -56,16 +56,16 @@
     }
   },
   "perfCn": {
-    "title": "A股业绩对比 创业板*",
+    "title": "A股业绩对比 创新100*",
     "subtitle": "自 {date} 起累计收益（{days} 个交易日）",
-    "marketSource": "* 基准：创业板ETF（159915.SZ）日收盘价",
+    "marketSource": "* 基准：中证研发创新100ETF（515200.SH）日收盘价",
     "accountBalance": "账户余额",
     "accountReturn": "账户收益率",
-    "marketReturn": "创业板收益率",
+    "marketReturn": "创新100收益率",
     "outperformance": "超额收益",
     "cumulativeReturn": "累计收益率 (%)",
     "account": "账户",
-    "market": "创业板",
+    "market": "创新100",
     "outperform": "超额"
   },
   "positions": {

@@ -56,16 +56,16 @@
     }
   },
   "perfCn": {
-    "title": "China Performance vs ChiNext*",
+    "title": "China Performance vs Innovation 100*",
     "subtitle": "Cumulative return since {date} ({days} trading days)",
-    "marketSource": "* Benchmark: ChiNext ETF (159915.SZ) daily close",
+    "marketSource": "* Benchmark: CSI R&D Innovation 100 ETF (515200.SH) daily close",
     "accountBalance": "Account Balance",
     "accountReturn": "Account Return",
-    "marketReturn": "ChiNext Return",
+    "marketReturn": "Innovation 100 Return",
     "outperformance": "Outperformance",
     "cumulativeReturn": "Cumulative Return (%)",
     "account": "Account",
-    "market": "ChiNext",
+    "market": "Innovation 100",
     "outperform": "Outperform"
   },
   "positions": {
